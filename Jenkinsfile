@@ -145,6 +145,12 @@
                 }
             }
 
+              stage('Unit Tests') {
+                steps {
+                    sh 'npm test -- --coverage'
+                }
+            }
+
             stage('Security Scans') {
                 parallel {
                     stage('Secret Scan (Gitleaks)') {
@@ -188,11 +194,7 @@
                 }
             }
 
-            stage('Unit Tests') {
-                steps {
-                    sh 'npm test -- --coverage'
-                }
-            }
+          
 
             stage('Quality Gate') {
                 steps {
