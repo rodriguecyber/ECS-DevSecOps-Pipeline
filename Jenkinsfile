@@ -315,6 +315,15 @@
                             // Set region
                             env.AWS_DEFAULT_REGION = params.AWS_REGION
                             
+                            // Ensure image tag is set (same as pushed in Push to ECR); required for correct pull
+                            if (!env.IMAGE_TAG?.trim()) {
+                                env.GIT_COMMIT_SHORT = env.GIT_COMMIT_SHORT ?: sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                                env.IMAGE_TAG = "v${BUILD_NUMBER}-${env.GIT_COMMIT_SHORT ?: 'unknown'}"
+                                echo "IMAGE_TAG was unset; using ${env.IMAGE_TAG}"
+                            }
+                            def imageUri = "${env.ECR_IMAGE}:${env.IMAGE_TAG}"
+                            echo "ECS will pull image: ${imageUri}"
+                            
                             // Store previous task definition for potential rollback
                             env.PREVIOUS_TASK_DEF = sh(script: """
                                 aws ecs describe-services --cluster ${env.ECS_CLUSTER} --services ${env.ECS_SERVICE} \
@@ -348,10 +357,9 @@
                                     "logConfiguration": {
                                         "logDriver": "awslogs",
                                         "options": {
-                                            "awslogs-group": "/ecs/${env.ECS_SERVICE}",
+                                            "awslogs-group": "/ecs/${rolePrefix}",
                                             "awslogs-region": "${params.AWS_REGION}",
-                                            "awslogs-stream-prefix": "ecs",
-                                            "awslogs-create-group": "true"
+                                            "awslogs-stream-prefix": "ecs"
                                         }
                                     },
                                     "healthCheck": {
