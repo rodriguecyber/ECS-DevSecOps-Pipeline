@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/users", userRoutes);
+app.use("/users", userRoutes);    
 
 const connectDB = async (dbUri) => {
   if (!dbUri) {
