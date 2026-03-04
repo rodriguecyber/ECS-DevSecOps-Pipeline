@@ -120,7 +120,7 @@
                                         --region ${params.AWS_REGION} \
                                         --project ${params.PROJECT_NAME} \
                                         --environment ${params.ENVIRONMENT} \
-                                        --action apply \
+                                        --action destroy \
                                         --auto-approve
                                 """
                             }
