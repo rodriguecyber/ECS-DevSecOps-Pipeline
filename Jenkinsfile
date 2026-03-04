@@ -23,9 +23,9 @@ pipeline {
     }
 
     environment {
-        SONAR_HOST_URL = credentials('sonarqube-url')
-        SONAR_TOKEN = credentials('sonarqube-token')
-        SNYK_TOKEN = credentials('snyk-token')
+        SONAR_HOST_URL = credentials('SONARQUBE_URL')
+        SONAR_TOKEN = credentials('SONARQUBE_SECRET')
+        SNYK_TOKEN = credentials('SYNK-TOKEN')
         REPORTS_DIR = 'security-reports'
         SBOM_DIR = 'sbom'
     }
