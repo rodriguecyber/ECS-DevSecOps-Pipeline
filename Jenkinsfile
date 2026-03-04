@@ -321,6 +321,11 @@
                                     --query 'services[0].taskDefinition' --output text 2>/dev/null || echo 'none'
                             """, returnStdout: true).trim()
 
+                            // Use Terraform-created IAM roles (must match terraform/modules/iam naming)
+                            def rolePrefix = "${params.PROJECT_NAME}-${params.ENVIRONMENT}"
+                            def executionRoleArn = "arn:aws:iam::${env.AWS_ACCOUNT_ID}:role/${rolePrefix}-ecs-execution-role"
+                            def taskRoleArn = "arn:aws:iam::${env.AWS_ACCOUNT_ID}:role/${rolePrefix}-ecs-task-role"
+
                             def taskDef = """
                             {
                                 "family": "${env.ECS_SERVICE}",
@@ -328,8 +333,8 @@
                                 "requiresCompatibilities": ["FARGATE"],
                                 "cpu": "256",
                                 "memory": "512",
-                                "executionRoleArn": "arn:aws:iam::${env.AWS_ACCOUNT_ID}:role/service-role/ecsTaskExecutionRole",
-                                "taskRoleArn": "arn:aws:iam::${env.AWS_ACCOUNT_ID}:role/ecsTaskRole",
+                                "executionRoleArn": "${executionRoleArn}",
+                                "taskRoleArn": "${taskRoleArn}",
                                 "containerDefinitions": [{
                                     "name": "${params.PROJECT_NAME}-${params.ENVIRONMENT}",
                                     "image": "${env.ECR_IMAGE}:${env.IMAGE_TAG}",

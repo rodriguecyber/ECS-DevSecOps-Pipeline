@@ -54,9 +54,9 @@ misconfiguration:
     - dockerfile
     - terraform
 
-# Secret scanning
-secret:
-  config: .gitleaks.toml
+# Secret scanning (Trivy built-in rules; .gitleaks.toml is Gitleaks TOML format, not Trivy YAML)
+# Use a separate Gitleaks step for custom TOML rules if needed.
+secret: {}
 
 # Custom ignore file
 ignorefile: .trivyignore
