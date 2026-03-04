@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.get("/", (req, res) => {
   res.status(200).json({
-    message: process.env.APP_MESSAGE || "Simple Web Service is running!",
+    message: process.env.APP_MESSAGE || "Hello, World!",
     version: process.env.APP_VERSION || "1.0.0",
   });
 });
