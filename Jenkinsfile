@@ -17,9 +17,9 @@
                 string(name: 'ECS_CLUSTER', defaultValue: '', description: 'ECS Cluster Name (auto-generated if empty)')
                 string(name: 'ECS_SERVICE', defaultValue: '', description: 'ECS Service Name (auto-generated if empty)')
                 string(name: 'APP_VERSION', defaultValue: '', description: 'Version (leave empty for auto)')
-                booleanParam(name: 'SETUP_BACKEND', defaultValue: true, description: 'Setup Terraform backend (first run only)')
-                booleanParam(name: 'DEPLOY_INFRASTRUCTURE', defaultValue: true, description: 'Deploy/update infrastructure with Terraform')
-                booleanParam(name: 'SKIP_SECURITY_GATES', defaultValue: false, description: 'Skip security gates (testing only)')
+                booleanParam(name: 'SETUP_BACKEND', defaultValue: false, description: 'Setup Terraform backend (first run only)')
+                booleanParam(name: 'DEPLOY_INFRASTRUCTURE', defaultValue: false, description: 'Deploy/update infrastructure with Terraform')
+                booleanParam(name: 'SKIP_SECURITY_GATES', defaultValue: true, description: 'Skip security gates (testing only)')
             }
 
             environment {
@@ -120,7 +120,7 @@
                                         --region ${params.AWS_REGION} \
                                         --project ${params.PROJECT_NAME} \
                                         --environment ${params.ENVIRONMENT} \
-                                        --action destroy \
+                                        --action apply \
                                         --auto-approve
                                 """
                             }
